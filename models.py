@@ -17,7 +17,7 @@ class Fighter(Base):
     name = Column(String)
     wins = Column(Integer, default=0)
     losses = Column(Integer, default=0)
-    average_number_of_votes = Column(Integer, default=0)
+    average_percent_of_votes = Column(Integer, default=0)
     average_win_time = Column(Integer, default=0)
     average_loss_time = Column(Integer, default=0)
 
