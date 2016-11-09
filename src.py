@@ -1,6 +1,6 @@
 import dryscrape
 import time
-from models import engine, Fighter
+from models import engine, Fighter, Fight
 from sqlalchemy.orm import sessionmaker
 from bs4 import BeautifulSoup
 
@@ -47,6 +47,16 @@ class StatBot(Browser):
 
         self.time_end = time.time()
         self.winner = outcome.split()[-1][:-1]
+
+    def record_fight_data(self):
+        if self.red_team[-1] == self.winner:
+            winner = self.red_team[1].strip()
+        else:
+            winner = self.blue_team[0].strip()
+
+        fight = Fight(fighter_one=self.red_team[1].strip(), fighter_two=self.blue_team[0].strip(), winner=winner)
+        session.add(fight)
+        session.commit()
 
     def record_data(self, name, win, time_elapsed, votes):
         """Writes data to database session"""
@@ -99,6 +109,7 @@ class StatBot(Browser):
                              time_elapsed=elapsed_time, votes=float(self.red_team[0]) / total_votes * 100)
             self.record_data(name=self.blue_team[0], win=self.winner == self.blue_team[-1],
                              time_elapsed=elapsed_time, votes=float(self.blue_team[1]) / total_votes * 100)
+            self.record_fight_data()
             self.wait_until_next_fight()
 
 if __name__ == '__main__':

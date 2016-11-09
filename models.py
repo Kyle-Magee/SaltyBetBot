@@ -21,4 +21,13 @@ class Fighter(Base):
     average_win_time = Column(Integer, default=0)
     average_loss_time = Column(Integer, default=0)
 
+
+class Fight(Base):
+    __tablename__ = 'fights'
+
+    id = Column(Integer, primary_key=True)
+    fighter_one = Column(String)
+    fighter_two = Column(String)
+    winner = Column(String)
+
 Base.metadata.create_all(engine)
