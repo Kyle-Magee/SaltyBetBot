@@ -12,6 +12,7 @@ session = Session()
 class Browser:
 
     def __init__(self, site):
+        dryscrape.start_xvfb()
         self.session = dryscrape.Session()
         self.session.visit(site)
         self.soup = BeautifulSoup(self.session.body(), 'lxml')
